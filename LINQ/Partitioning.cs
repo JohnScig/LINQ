@@ -1,6 +1,7 @@
 ﻿using LINQ.Data;
 using LINQ.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LINQ
 {
@@ -17,7 +18,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.Take(3);
         }
 
         /// <summary>
@@ -30,7 +31,14 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new CustomerOrderDto[] { };
+            return (from c in customers
+                    where c.Region == "WA"
+                    from o in c.Orders
+                    select new CustomerOrderDto()
+                    {
+                        CustomerId = c.CustomerID,
+                        OrderId = o.OrderID
+                    }).Take(3);
         }
 
         /// <summary>
@@ -43,7 +51,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.Skip(4);;
         }
 
         /// <summary>
@@ -56,7 +64,14 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new CustomerOrderDto[] { };
+            return (from c in customers
+                    where c.Region == "WA"
+                    from o in c.Orders
+                    select new CustomerOrderDto()
+                    {
+                        CustomerId = c.CustomerID,
+                        OrderId = o.OrderID
+                    }).Skip(2);
         }
 
         /// <summary>
@@ -69,7 +84,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.TakeWhile(n=>n<6);
         }
 
         /// <summary>
@@ -82,7 +97,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.TakeWhile((n,i)=>n>=i);
         }
 
         /// <summary>
@@ -95,7 +110,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.SkipWhile(n=>n%3!=0);
         }
 
         /// <summary>
@@ -108,7 +123,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.SkipWhile((n,i)=>n>i);
         }
     }
 }

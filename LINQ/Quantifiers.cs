@@ -16,8 +16,8 @@ namespace LINQ
             string[] words = { "believe", "relief", "receipt", "field" };
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-            
-            return null;
+
+            return words.Any(w => w.Contains("ei"));
         }
 
         /// <summary>
@@ -29,8 +29,11 @@ namespace LINQ
             List<Product> products = DataLoader.GetProductList();
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-            
-            return new string[] { };
+
+            //return products.Where(p => p.UnitsInStock == 0).Select(p => p.Category);
+            return products.GroupBy(p => p.Category)
+                           .Where(g => g.Any(p => p.UnitsInStock == 0))
+                           .Select(g => g.Key);
         }
 
         /// <summary>
@@ -42,8 +45,8 @@ namespace LINQ
             int[] numbers = { 1, 11, 3, 19, 41, 65, 19 };
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-            
-            return null;
+
+            return numbers.All(n => n % 2 == 1);
         }
 
         /// <summary>
@@ -55,8 +58,10 @@ namespace LINQ
             List<Product> products = DataLoader.GetProductList();
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!            
-            
-            return new string[] { };
+
+            return products.GroupBy(p => p.Category)
+                           .Where(g => g.All(p => p.UnitsInStock != 0))
+                           .Select(g => g.Key);
         }
     }
 }

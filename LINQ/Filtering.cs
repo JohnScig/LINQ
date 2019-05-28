@@ -18,7 +18,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new int[] { };
+            return numbers.Where(n=>n<5);
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new Product[] { };
+            return products.Where(p=>p.UnitsInStock == 0);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new Product[] { };
+            return products.Where(p=> p.UnitsInStock>0 && p.UnitPrice > 3);
         }
 
         /// <summary>
@@ -54,10 +54,7 @@ namespace LINQ
         public static IEnumerable<CustomerDto> WhereDrillDown()
         {
             List<Customer> customers = DataLoader.GetCustomerList();
-
-            // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-
-            return new CustomerDto[] { };
+            return customers.Where(c => c.Region == "WA").Select(c => new CustomerDto() { CustomerId = c.CustomerID, OrderCount = c.Orders.Count() });
         }
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            return digits.Where((d,i)=>d.Length<i);
         }
 
     }

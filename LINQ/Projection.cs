@@ -1,6 +1,7 @@
 ﻿using LINQ.Data;
 using LINQ.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LINQ
 {
@@ -15,9 +16,7 @@ namespace LINQ
         {
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
 
-            // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-
-            return new int[] { };
+            return numbers.Select(n => n + 1).ToArray();
         }
 
         /// <summary>
@@ -28,9 +27,7 @@ namespace LINQ
         {
             List<Product> products = DataLoader.GetProductList();
 
-            // !!! INSERT YOUR LINQ  MAGIC HERE !!!
-
-            return new string[] { };
+            return products.Select(p=>p.ProductName);
         }
 
         /// <summary>
@@ -42,9 +39,8 @@ namespace LINQ
             int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
             string[] strings = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            return numbers.Select(n=>strings[n]);
         }
 
         /// <summary>
@@ -58,7 +54,7 @@ namespace LINQ
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
             // Create LINQ query and replace anonymousItems array with its results
             // Results should be anonymous types with properties: string Upper, string Lower
-            dynamic[] anonymousItems = { new { Upper = string.Empty, Lower = string.Empty } };
+            dynamic anonymousItems = words.Select(w=> new {Upper = w.ToUpper(), Lower = w.ToLower() }) ;
             foreach (dynamic item in anonymousItems)
             {
                 yield return $"Uppercase: {item.Upper}, Lowercase: {item.Lower}";
@@ -77,7 +73,8 @@ namespace LINQ
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
             // Create LINQ query and replace anonymousItems array with its results
             // Results should be anonymous types with properties: string Digit, bool Even
-            dynamic[] anonymousItems = { new { Digit = string.Empty, Even = false } };
+            //dynamic[] anonymousItems = { new { Digit = string.Empty, Even = false } };
+            dynamic anonymousItems = numbers.Select(n => new { Digit = strings[n], Even = (n % 2 == 0) });
             foreach (dynamic item in anonymousItems)
             {
                 yield return $"The digit {item.Digit} is {(item.Even ? "even" : "odd")}.";
@@ -95,7 +92,7 @@ namespace LINQ
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
             // Create LINQ query and replace anonymousItems array with its results
             // Results should be anonymous types with properties: int Digit, bool InPlace
-            dynamic[] anonymousItems = { new { Digit = -1, InPlace = false } };
+            dynamic anonymousItems = numbers.Select((n,i) => new { Digit = n, InPlace = (i==n) } );
             foreach (dynamic item in anonymousItems)
             {
                 yield return $"{item.Digit}: {item.InPlace}";
@@ -113,7 +110,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            return numbers.Where(n=>n<5).Select(n=>digits[n]);
         }
 
         /// <summary>

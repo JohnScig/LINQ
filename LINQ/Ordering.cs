@@ -1,6 +1,7 @@
 ﻿using LINQ.Data;
 using LINQ.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LINQ
 {
@@ -17,7 +18,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            return words.OrderBy(w=>w);
         }
 
         /// <summary>
@@ -30,7 +31,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!            
 
-            return new string[] { };
+            return words.OrderBy(w=>w.Length);
         }
 
         /// <summary>
@@ -43,7 +44,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!            
 
-            return new Product[] { };
+            return products.OrderBy(p=>p.ProductName);
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!            
 
-            return new double[] { };
+            return doubles.OrderByDescending(d=>d);
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!            
 
-            return new Product[] { };
+            return products.OrderByDescending(p=>p.UnitsInStock);
         }
 
         /// <summary>
@@ -82,7 +83,7 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            return digits.OrderBy(d=>d.Length).ThenBy(d=>d);
         }
 
         /// <summary>
@@ -95,7 +96,9 @@ namespace LINQ
 
             // !!! INSERT YOUR LINQ  MAGIC HERE !!!
 
-            return new string[] { };
+            //return digits.Select(d => { if (d[1] == 'i') return d; }).Reverse();
+            //return digits.Select(d => (d[1] == 'i') ? d : null ).Reverse();
+            return digits.Where(d => (d[1] == 'i')).Reverse();
         }
     }
 }

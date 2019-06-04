@@ -15,9 +15,7 @@ namespace LINQ
         /// <returns></returns>
         public static string Disemvowel(string input)
         {
-            string consonants = "aeiouyAEIOUY";
-            char[] noVowels = input.Where(c => !consonants.Contains(c)).Select(n => n).ToArray();
-            return new string (noVowels);
+            return new string(input.Where(c => !"aeiouyAEIOUY".Contains(c)).ToArray());
         }
 
         /// <summary>
@@ -32,8 +30,7 @@ namespace LINQ
         /// <returns></returns>
         public static string TwoToOne(string s1, string s2)
         {
-            string s = s1 + s2;
-            return new string (s.Distinct().OrderBy(c=>c).ToArray());
+            return new string(string.Concat(s1, s2).Distinct().OrderBy(c => c).ToArray());
         }
 
         /// <summary>
@@ -60,11 +57,11 @@ namespace LINQ
         //Napríklad: s = "aaaxbbbbyyhwawiwjjjwwm", CharacterError(s) => "8/22"
         public static string CharacterError(string s)
         {
-            string errorChars = "nopqrstuvwxyz";
+            //string errorChars = "nopqrstuvwxyz";
+            //int numOfErrors = s.Where(c => errorChars.Contains(c)).ToList().Count;
+            //return $"{s.Where(c => "nopqrstuvwxyz".Contains(c)).ToList().Count}/{s.Length}";
 
-            int numOfErrors = s.Where(c => errorChars.Contains(c)).ToList().Count;
-
-            return $"{numOfErrors}/{s.Length}";
+            return $"{s.Where(c => char.ToLower(c) > 'm').ToList().Count}/{s.Length}";
         }
 
         //ArrayDiff: Vytvorte funkciu, ktorá odčíta jedno pole čísel od druhého a vráti výsledok, t.j.z poľa a
@@ -82,7 +79,7 @@ namespace LINQ
         public static bool IsIsogram(string str)
         {
             str = str.ToLower();
-            return str == new string (str.Distinct().ToArray());
+            return str == new string(str.Distinct().ToArray());
         }
 
         //CreatePhoneNumber: Vytvorte funkciu, ktorá zo vstupného poľa 10 čísel vytvorí telefónne číslo v
@@ -90,8 +87,9 @@ namespace LINQ
         //Napríklad: CreatePhoneNumber(new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 0}) => "(123) 456-7890"
         public static string CreatePhoneNumber(int[] numbers)
         {
-            Regex phoneRgx = new Regex(@"\(?\d{3}\)? *\d{3}-?\d{4}");
-            return string.Empty;
+            string result = numbers.Aggregate(string.Empty, (s, i) => s + i.ToString());
+            string ret = Regex.Replace(result, @"^(?<one>\d{3})(?<two>\d{3})(?<tri>\d{4})", "(${one}) ${two}-${tri}");
+            return ret;
         }
 
         //FindParityOutlier: Dostanete pole čísel, ktoré bude mať minimálne 3 prvky, ale môže ich tiež mať
@@ -100,11 +98,19 @@ namespace LINQ
         //Napríklad: GetParityOutlier(new int[] {2, 4, 0, 100, 4, 11, 2602, 36}) => 11 (jediné nepárne číslo)
         public static int FindParityOutlier(int[] integers)
         {
-            int[] evenInts = integers.Where(x => x % 2 == 0).ToArray();
-            if (evenInts.Length == 1)
-                return evenInts[0];
-            else
-                return integers.First(x=>x%2==1);
+            //int[] evenInts = integers.Where(x => x % 2 == 0).ToArray();
+            //if (evenInts.Length == 1)
+            //    return evenInts[0];
+            //else
+            //    return integers.First(x=>x%2==1);
+
+            //return integers.GroupBy(n => n % 2)
+            //               .Where(g => g.Count() == 1)
+            //               .Select(g => g.First()).ToArray()[0];
+
+            return integers.GroupBy(n => n % 2)
+                           .First(g => g.Count() == 1) //returns the group with Count ==1
+                           .First();                   //returns the first element of that group
 
         }
 
@@ -115,9 +121,15 @@ namespace LINQ
         {
             string[] words = str.Split(' ');
             string[] pigWords = words.Select(x => x + x.First() + "ay").ToArray();
-            pigWords = pigWords.Select(x => new string (x.Skip(1).ToArray())).ToArray();
+            pigWords = pigWords.Select(x => new string(x.Skip(1).ToArray())).ToArray();
             string finalSentenceInPig = pigWords.Aggregate((result, x) => result + $" {x}");
             return finalSentenceInPig;
+
+            //return string.Join(" ", str.Split(' ')
+            //                           .Where(word => word.All(c => char.ToLower(c) <= 'a' &&
+            //                                                        char.ToLower(c) >= 'z'))
+            //                           .Select(word => word.Substring(1) + word[0] + "ay"));
+
         }
 
         //ChangeWeight: Do funkcie vám príde zoznam váh fitness klubu Fat to Fit(reťazec čísel oddelených
@@ -130,7 +142,7 @@ namespace LINQ
         {
             string[] weights = strng.Split(' ');
 
-            return new string (weights.OrderBy(n=>n.Sum(c => c - '0')).ThenBy(n=>n).Aggregate((result,x) => result + $" {x}").ToArray());
+            return new string(weights.OrderBy(n => n.Sum(c => c - '0')).ThenBy(n => n).Aggregate((result, x) => result + $" {x}").ToArray());
         }
 
         //DontGiveMeFive: Do funkcie prídu hranice intervalu(inkluzívne) a návratovou hodnotou bude
@@ -143,7 +155,11 @@ namespace LINQ
             //range = range.Where(x => !x.ToString().Contains('5')).ToList();
             //int count = range.Count();
 
-            return Enumerable.Range(start, end-start+1).Where(x => !x.ToString().Contains('5')).Count();
+            //return Enumerable.Range(start, end-start+1)
+            //                 .Where(x => !x.ToString().Contains('5')).Count();
+
+            return Enumerable.Range(start, end - start + 1)
+                 .Count(x => !x.ToString().Contains('5'));
             //return count;
         }
 
@@ -154,8 +170,11 @@ namespace LINQ
         public static string DuplicateEncode(string word)
         {
             word = word.ToLower();
-
-            return new string(word.Select(x => word.GroupBy(p => p).ToDictionary(y => y.Key, y => y.ToArray().Length)[x] == 1 ? '(' : ')').ToArray());
+            //return new string(word.Select(x => word.GroupBy(p => p).ToDictionary(y => y.Key, y => y.ToArray().Length)[x] == 1 ? '(' : ')').ToArray());
+            return new string(word.Select(chr =>
+                                word.Count(chr2 => char.ToLower(chr) == char.ToLower(chr2)) == 1
+                                ? '('
+                                : ')').ToArray());
         }
 
         //OnesAndZeros: Vytvorte konverted binárnych čísel.Do funkcie bude vstupovať pole núl a
@@ -165,12 +184,16 @@ namespace LINQ
         //Napríklad: OnesAndZeros(new int[] {0, 1, 1, 0}) => 6
         public static int OnesAndZeros(int[] binaryArray)
         {
-            int i = 1;
-            char c = Convert.ToChar(i+48);
+            //int i = 1;
+            //char c = Convert.ToChar(i+48);
 
+            //return Convert.ToInt32(string.Join("", binaryArray), 2);
 
-            string binary = new string(binaryArray.Select(x=>Convert.ToChar(x+48)).ToArray());
-            return Convert.ToInt32(binary, 2);
+            //return Convert.ToInt32(new string(binaryArray.Select(b => (char)(b + '0')).ToArray()), 2);
+            return Convert.ToInt32(new string(binaryArray.Select(b => b == 0 ? '0' : '1').ToArray()), 2);
+
+            //string binary = new string(binaryArray.Select(x => Convert.ToChar(x + 48)).ToArray());
+            //return Convert.ToInt32(binary, 2);
         }
 
         //CountPositivesSumNegatives: Vytvorte funkciu, do ktorej ako parameter príde pole čísel a
@@ -186,9 +209,10 @@ namespace LINQ
             if (input.Length == 0)
                 return new int[0];
 
-            int positivesCount = input.Where(x => x > 0).Count();
-            int negativesSum = input.Where(x => x < 0).Count()==0? 0 : input.Where(x => x < 0).Aggregate((result,x)=>result + x);
-            return new int[] {positivesCount, negativesSum };
+            int positivesCount = input.Count(x => x > 0);
+            int negativesSum = input.Where(x => x < 0).Sum();
+            //int negativesSum = input.Where(x => x < 0).Count()==0? 0 : input.Where(x => x < 0).Aggregate((result,x)=>result + x);
+            return new int[] { positivesCount, negativesSum };
         }
     }
 }

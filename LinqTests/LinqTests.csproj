@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="FilteringTest.cs" />
+    <Compile Include="PracticeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProjectionTest.cs" />
     <Compile Include="PartitioningTest.cs" />

@@ -54,6 +54,7 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Ordering.cs" />
     <Compile Include="Partitioning.cs" />
+    <Compile Include="Practice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Projection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
